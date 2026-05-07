@@ -1,0 +1,13 @@
+# Data and models (too large for git)
+data/
+models/
+
+# Environment variables (secrets!)
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Jupyter checkpoint files
+.ipynb_checkpoints/
