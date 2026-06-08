@@ -1,0 +1,73 @@
+# .github/workflows/ci.yml
+# CI pipeline for the fraud detection project.
+# Runs on every push to main and on every pull request.
+
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  # =================================================================
+  # Job 1: Run the test suite
+  # =================================================================
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository's code into the runner
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Python 3.11 on the runner
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          # Cache pip downloads so subsequent runs are faster
+          cache: pip
+
+      # Install project dependencies + the project itself
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+
+      # Run the test suite
+      # Tests that depend on data/model files will skip gracefully
+      # since those aren't in git. The remaining tests still verify
+      # code structure, imports, and the quality gate's broken-data handling.
+      - name: Run pytest
+        run: |
+          pytest tests/ -v
+
+  # =================================================================
+  # Job 2: Lint the code with ruff
+  # =================================================================
+  lint:
+    name: Lint with ruff
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      # We only need ruff for this job, not the full requirements.txt
+      - name: Install ruff
+        run: pip install ruff
+
+      # Run ruff on the source folders
+      # Returns a non-zero exit code if any issues are found, failing the job
+      - name: Run ruff
+        run: ruff check src/ app/

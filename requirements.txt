@@ -9,3 +9,8 @@ mlflow
 great-expectations
 pytest
 plotly
+matplotlib
+seaborn
+jupyter
+optuna
+ruff
