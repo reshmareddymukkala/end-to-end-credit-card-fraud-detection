@@ -130,8 +130,8 @@ st.markdown(
     "All code, the trained model, and the full project history are on GitHub:"
 )
 st.markdown(
-    "**[github.com/your-username/EndToEndMLProject]"
-    "(https://github.com/your-username/EndToEndMLProject)**"
+    "**[github.com/reshmareddymukkala/end-to-end-credit-card-fraud-detection]"
+    "(https://github.com/reshmareddymukkala/end-to-end-credit-card-fraud-detection)**"
 )
 #st.caption("Replace the link above with your actual repo URL when deployed.")
 

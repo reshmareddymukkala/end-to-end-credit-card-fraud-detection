@@ -91,7 +91,7 @@ def render_footer():
     st.markdown(
         "<div style='text-align: center; color: gray; font-size: 0.85em;'>"
         "Built with Python, scikit-learn, XGBoost, MLflow, and Streamlit · "
-        "<a href='https://github.com/your-username/EndToEndMLProject' target='_blank'>"
+        "<a href='https://github.com/reshmareddymukkala/end-to-end-credit-card-fraud-detection' target='_blank'>"
         "View on GitHub</a>"
         "</div>",
         unsafe_allow_html=True,
