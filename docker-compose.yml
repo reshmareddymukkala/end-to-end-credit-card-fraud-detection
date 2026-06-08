@@ -1,0 +1,37 @@
+# docker-compose.yml
+# Defines how to run the Streamlit app as a service.
+# Lets you start the whole thing with a single command:
+#   docker compose up
+
+services:
+  streamlit:
+    # Build the image from the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # Friendly name for the container
+    container_name: fraud-detection-app
+
+    # Map host port 8501 to container port 8501
+    # First number = port on your machine, second = port inside container
+    ports:
+      - "8501:8501"
+
+    # Mount data and models from the host into the container
+    # Any changes you make on the host appear inside the container in real time
+    # This is great for development; in production you'd usually skip volumes
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+
+    # Restart policy: if the container crashes, Docker tries to restart it
+    # "unless-stopped" = restart unless YOU explicitly stopped it
+    restart: unless-stopped
+
+    # Pass environment variables to the container
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false

@@ -209,7 +209,7 @@ def select_features(
     numeric_df = numeric_df[remaining]
 
     # ---------- Check 2: Low variance features ----------
-    print(f"\nChecking for low-variance features...")
+    print("\nChecking for low-variance features...")
     variances = numeric_df.var()
     # Use median instead of mean — robust to outlier features like 'Time'
     # whose variance is orders of magnitude larger than everything else.

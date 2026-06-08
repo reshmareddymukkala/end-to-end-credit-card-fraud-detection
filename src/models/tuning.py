@@ -14,7 +14,6 @@ import time
 from pathlib import Path
 
 import joblib
-import numpy as np
 import optuna
 import pandas as pd
 from sklearn.metrics import (
@@ -227,7 +226,7 @@ if __name__ == "__main__":
     print(f"Precision: {metrics['precision']:.4f}")
     print(f"Recall:    {metrics['recall']:.4f}")
     print(f"F1 score:  {metrics['f1']:.4f}")
-    print(f"\nConfusion matrix:")
+    print("\nConfusion matrix:")
     print(f"  Fraud caught (TP):     {metrics['tp']}")
     print(f"  False alarms (FP):     {metrics['fp']}")
     print(f"  Fraud missed (FN):     {metrics['fn']}")
@@ -237,7 +236,7 @@ if __name__ == "__main__":
     print("\n" + "=" * 60)
     print("IMPROVEMENT VS. UNTUNED XGBOOST")
     print("=" * 60)
-    print(f"Untuned XGBoost test PR-AUC: 0.8055")
+    print("Untuned XGBoost test PR-AUC: 0.8055")
     print(f"Tuned XGBoost test PR-AUC:   {metrics['pr_auc']:.4f}")
     delta = metrics['pr_auc'] - 0.8055
     print(f"Change: {delta:+.4f}")

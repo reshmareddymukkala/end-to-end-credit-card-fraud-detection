@@ -17,7 +17,6 @@ import time
 from pathlib import Path
 
 import joblib
-import numpy as np
 import pandas as pd
 from lightgbm import LGBMClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -206,7 +205,7 @@ def run_comparison():
 
     # Save table for the README
     df_results.to_csv(Path("models") / "comparison.csv", index=False)
-    print(f"\nSaved comparison table to: models/comparison.csv")
+    print("\nSaved comparison table to: models/comparison.csv")
 
     return df_results
 
@@ -224,5 +223,5 @@ if __name__ == "__main__":
     print(f"  Test precision: {winner['test_precision']:.4f}")
     print(f"  Test recall:    {winner['test_recall']:.4f}")
     print(f"  False alarms:   {winner['fp']} per test set")
-    print(f"\nNote: For an automated system, also consider precision and false "
-          f"alarm count — not just PR-AUC. Threshold tuning will follow.")
+    print("\nNote: For an automated system, also consider precision and false "
+          "alarm count — not just PR-AUC. Threshold tuning will follow.")

@@ -1,6 +1,6 @@
 # Data and models (too large for git)
 data/
-models/
+/models/
 
 # Environment variables (secrets!)
 .env
@@ -11,3 +11,9 @@ __pycache__/
 
 # Jupyter checkpoint files
 .ipynb_checkpoints/
+mlruns/
+mlartifacts/
+mlflow.db
+
+*.egg-info/
+src.egg-info/
