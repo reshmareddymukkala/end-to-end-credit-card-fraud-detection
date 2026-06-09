@@ -2,9 +2,9 @@
 
 > An end-to-end machine learning system for identifying fraudulent credit card transactions in a heavily imbalanced dataset (0.17% fraud rate). Built as a full production pipeline: data validation, EDA, feature engineering, model selection, hyperparameter tuning, experiment tracking, containerization, automated testing and a public Streamlit dashboard.
 
-**Live Demo:** https://end-to-end-credit-card-fraud-detection-by-reshmareddymukkala.streamlit.app/
-**Repo:** https://github.com/reshmareddymukkala/end-to-end-credit-card-fraud-detection
-**MLflow Runs:** Tracked locally with full experiment history (see `models/` artifacts)
+**Live Demo:** https://end-to-end-credit-card-fraud-detection-by-reshmareddymukkala.streamlit.app/  
+**Repo:** https://github.com/reshmareddymukkala/end-to-end-credit-card-fraud-detection  
+**MLflow Runs:** Tracked locally with full experiment history (see `models/` artifacts)  
 
 [![CI](https://github.com/reshmareddymukkala/end-to-end-credit-card-fraud-detection/workflows/CI/badge.svg)](https://github.com/reshmareddymukkala/end-to-end-credit-card-fraud-detection/actions)
 ![Python](https://img.shields.io/badge/python-3.11-blue)
