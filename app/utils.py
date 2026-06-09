@@ -71,17 +71,12 @@ def render_demo_banner():
     """
     if is_demo_mode():
         st.warning(
-            "📌 **Demo Mode** — You're seeing synthetic data because the "
-            "training pipeline hasn't been run on this machine yet. "
-            "The visualizations and metrics shown are illustrative, not "
-            "actual model results. To see real results, run the full pipeline:\n\n"
-            "```\n"
-            "python src/data/cleaner.py\n"
-            "python src/features/run_features.py\n"
-            "python src/models/tuning.py\n"
-            "python src/models/run_training.py\n"
-            "python src/models/export_for_app.py\n"
-            "```"
+            "*This deployed app runs on a synthetic 10,000-row dataset."
+            "because the original 283K-row Kaggle dataset "
+            "isn't included in this repo. The **model metrics, comparison "
+            "table and live prediction widget all use the real trained "
+            "XGBoost model**. For the full experience with real EDA data, "
+            "clone the repo and run the pipeline (see README)."
         )
 
 
