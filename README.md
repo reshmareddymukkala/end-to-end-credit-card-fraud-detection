@@ -1,4 +1,4 @@
-# 💳 Credit Card Fraud Detection — End-to-End ML Project
+# Credit Card Fraud Detection  End-to-End ML Project
 
 > An end-to-end machine learning system for identifying fraudulent credit card transactions in a heavily imbalanced dataset (0.17% fraud rate). Built as a full production pipeline: data validation, EDA, feature engineering, model selection, hyperparameter tuning, experiment tracking, containerization, automated testing and a public Streamlit dashboard.
 
@@ -29,6 +29,7 @@
 ## 2. Architecture
 
 The pipeline flows from raw data through cleaning, feature engineering, model training and deployment:
+```
 ┌─────────────────┐
 │     CSV         │  284,807 transactions
 │  (raw data)     │
@@ -75,7 +76,7 @@ The pipeline flows from raw data through cleaning, feature engineering, model tr
 │  Streamlit App  │  Multi-page portfolio dashboard
 │  (Dockerized)   │   with live prediction widget
 └─────────────────┘
-
+```
 ---
 
 ## 3. Results
@@ -91,21 +92,21 @@ Four models were trained and compared on a held-out 20% stratified test set (56,
 
 ### Improvement vs. Baseline
 
-The tuned XGBoost reduces false alarms from **1,397 → 5** (a 99.6% reduction) while maintaining comparable recall to the baseline. Precision increased from 5.5% to 93.6% — a 17× improvement that makes the model viable for automated use. PR-AUC improved from 0.673 to 0.810 (+20.4%).
+The tuned XGBoost reduces false alarms from **1,397 → 5** (a 99.6% reduction) while maintaining comparable recall to the baseline. Precision increased from 5.5% to 93.6% - a 17× improvement that makes the model viable for automated use. PR-AUC improved from 0.673 to 0.810 (+20.4%).
 
 ### Why XGBoost (Tuned), Not Random Forest
 
 Random Forest and XGBoost achieved nearly identical PR-AUC (0.811 vs 0.810). The choice was made on operational grounds, not metrics:
 
-- **XGBoost catches 4 more fraud cases (73 vs 69)** for only 3 additional false alarms — a favorable trade-off at the scale of millions of daily transactions.
-- **XGBoost trains 18× faster** (2.5s vs 30.8s) — important for retraining workflows.
+- **XGBoost catches 4 more fraud cases (73 vs 69)** for only 3 additional false alarms - a favorable trade-off at the scale of millions of daily transactions.
+- **XGBoost trains 18× faster** (2.5s vs 30.8s) - important for retraining workflows.
 - **XGBoost is the industry standard** for tabular fraud detection; tooling for monitoring, explainability, and deployment is more mature.
 
 LightGBM was also tested but produced degenerate probability outputs (all 0s and 1s) at this imbalance level, making PR-AUC unreliable. Excluded from the final comparison and documented as a known issue.
 
 ### Honest Caveat on Overfitting
 
-The tuned XGBoost achieves training PR-AUC of 1.0 vs. test PR-AUC of 0.81 — significant memorization of the 378 training fraud cases. This is typical for tree-based models on imbalanced data and is the practical ceiling without additional data sources (e.g., per-customer transaction history, which this dataset doesn't provide).
+The tuned XGBoost achieves training PR-AUC of 1.0 vs. test PR-AUC of 0.81 - significant memorization of the 378 training fraud cases. This is typical for tree-based models on imbalanced data and is the practical ceiling without additional data sources (e.g., per-customer transaction history, which this dataset doesn't provide).
 
 ---
 
@@ -257,7 +258,7 @@ One feature (`amount_zero_flag`) was dropped during selection due to low varianc
 ---
 
 ## 9. Project Structure
-
+```
 end-to-end-credit-card-fraud-detection/
 ├── .github/
 │   └── workflows/
@@ -301,7 +302,7 @@ end-to-end-credit-card-fraud-detection/
 ├── README.md                         # ← you are here
 ├── requirements.txt
 └── setup.py                          # Makes src/ an importable package
-
+```
 ---
 
 ## 10. Acknowledgments
