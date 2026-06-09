@@ -311,4 +311,4 @@ end-to-end-credit-card-fraud-detection/
 
 ## Contact
 
-**Reshma Reddy Mukkala** · [LinkedIn](www.linkedin.com/in/reshma-reddy-mukkala-8956b5209) · [GitHub](https://github.com/reshmareddymukkala)
+**Reshma Reddy Mukkala** · [LinkedIn](https://www.linkedin.com/in/reshma-reddy-mukkala-8956b5209) · [GitHub](https://github.com/reshmareddymukkala)
