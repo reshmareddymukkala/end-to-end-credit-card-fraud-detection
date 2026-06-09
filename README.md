@@ -2,7 +2,7 @@
 
 > An end-to-end machine learning system for identifying fraudulent credit card transactions in a heavily imbalanced dataset (0.17% fraud rate). Built as a full production pipeline: data validation, EDA, feature engineering, model selection, hyperparameter tuning, experiment tracking, containerization, automated testing and a public Streamlit dashboard.
 
-**Live Demo:** [link coming soon — deployment in progress]
+**Live Demo:** https://end-to-end-credit-card-fraud-detection-by-reshmareddymukkala.streamlit.app/
 **Repo:** https://github.com/reshmareddymukkala/end-to-end-credit-card-fraud-detection
 **MLflow Runs:** Tracked locally with full experiment history (see `models/` artifacts)
 
@@ -100,7 +100,7 @@ Random Forest and XGBoost achieved nearly identical PR-AUC (0.811 vs 0.810). The
 
 - **XGBoost catches 4 more fraud cases (73 vs 69)** for only 3 additional false alarms - a favorable trade-off at the scale of millions of daily transactions.
 - **XGBoost trains 18× faster** (2.5s vs 30.8s) - important for retraining workflows.
-- **XGBoost is the industry standard** for tabular fraud detection; tooling for monitoring, explainability, and deployment is more mature.
+- **XGBoost is the industry standard** for tabular fraud detection; tooling for monitoring, explainability and deployment is more mature.
 
 LightGBM was also tested but produced degenerate probability outputs (all 0s and 1s) at this imbalance level, making PR-AUC unreliable. Excluded from the final comparison and documented as a known issue.
 
@@ -118,17 +118,17 @@ The tuned XGBoost achieves training PR-AUC of 1.0 vs. test PR-AUC of 0.81 - sign
 | **pandas, NumPy**     | Data loading and manipulation                                        |
 | **scikit-learn**      | Baseline model, train/test split, preprocessing pipeline             |
 | **XGBoost**           | Production model (gradient boosting)                                 |
-| **LightGBM**          | Comparison model (excluded — see results)                            |
+| **LightGBM**          | Comparison model (excluded, see results)                            |
 | **Optuna**            | Hyperparameter tuning via Bayesian optimization (TPE sampler)        |
-| **MLflow**            | Experiment tracking — params, metrics, model artifacts               |
+| **MLflow**            | Experiment tracking - params, metrics, model artifacts               |
 | **Streamlit**         | Multi-page portfolio dashboard with live prediction widget           |
 | **Plotly**            | Interactive visualizations in the dashboard                          |
 | **Matplotlib / seaborn** | Static plots in the EDA notebook                                  |
 | **Jupyter**           | EDA notebook environment                                             |
-| **pytest**            | Test suite (22 tests across data, features, and model layers)        |
+| **pytest**            | Test suite (22 tests across data, features and model layers)        |
 | **ruff**              | Linting and import sorting                                           |
 | **Docker / docker-compose** | Containerization for reproducible deployment                   |
-| **GitHub Actions**    | CI pipeline — auto-runs tests and lint on every push                 |
+| **GitHub Actions**    | CI pipeline - auto-runs tests and lint on every push                 |
 | **Git**               | Version control                                                      |
 
 ---
@@ -215,7 +215,7 @@ Opens at http://localhost:5000.
 pytest tests/ -v
 ```
 
-22 tests across data quality, feature engineering, and model behavior. Tests run in ~5 seconds and gracefully skip if data files are missing.
+22 tests across data quality, feature engineering and model behavior. Tests run in ~5 seconds and gracefully skip if data files are missing.
 
 ---
 
@@ -230,10 +230,10 @@ Thirteen features were engineered across three categories. The PCA-anonymized V1
 | `log_amount`             | Domain      | `Amount` is heavily right-skewed; log transform improves linear models |
 | `amount_zero_flag`       | Domain      | Captures the 0.6% of transactions at exactly $0 (often pre-auth pings) |
 | `amount_bucket`          | Domain      | Discretizes amount into 5 tiers for tree models                        |
-| `v_magnitude`            | Statistical | L2 norm of V1–V28 — fraud sits at extreme PCA-space distances          |
+| `v_magnitude`            | Statistical | L2 norm of V1–V28 - fraud sits at extreme PCA-space distances          |
 | `v_negative_count`       | Statistical | Count of V features < 0; top fraud predictors all skew negative        |
-| `top_fraud_v_mean`       | Statistical | Mean of V10, V12, V14, V16, V17 — the strongest fraud predictors      |
-| `top_fraud_v_min`        | Statistical | Min of the same — captures the most extreme negative value             |
+| `top_fraud_v_mean`       | Statistical | Mean of V10, V12, V14, V16, V17 - the strongest fraud predictors      |
+| `top_fraud_v_min`        | Statistical | Min of the same - captures the most extreme negative value             |
 | `amount_v17_interaction` | Interaction | High-value transactions × strongest fraud signal                       |
 | `night_amount_ratio`     | Interaction | Amplifies suspicious large transactions during off-hours              |
 | `fraud_score_proxy`      | Interaction | Composite signal: `-top_fraud_v_mean × v_magnitude`                    |
@@ -245,15 +245,15 @@ One feature (`amount_zero_flag`) was dropped during selection due to low varianc
 
 ## 8. Key Decisions & Lessons Learned
 
-**Choosing PR-AUC over accuracy as the headline metric.** With 99.83% legit transactions, accuracy is a vanity metric — a model that predicts "not fraud" for everything scores 99.83% accuracy and catches zero fraud. PR-AUC focuses on the minority class and is the industry standard for imbalanced classification.
+**Choosing PR-AUC over accuracy as the headline metric.** With 99.83% legit transactions, accuracy is a vanity metric - a model that predicts "not fraud" for everything scores 99.83% accuracy and catches zero fraud. PR-AUC focuses on the minority class and is the industry standard for imbalanced classification.
 
 **A variance-based feature selection bug taught me to never trust mean-based thresholds.** My first pass at feature selection used "drop features with variance < 1% of the mean variance." This deleted **42 of 43 features** because `Time` (in seconds, range 0–172,000) has a variance ~2 billion times larger than any other feature. Its variance dominated the mean and made the threshold useless. The fix was to use the **median variance** instead, which is robust to outlier features. **Lesson: any threshold derived from a mean is fragile when feature scales differ.**
 
-**Picking XGBoost over Random Forest despite a PR-AUC tie was the right operational call.** Random Forest and XGBoost scored 0.811 vs 0.810 — effectively identical. Choosing XGBoost based on 18× faster training and better tooling for production deployment was a judgment call, not a metric call. Worth knowing that real model selection often happens on factors beyond pure score.
+**Picking XGBoost over Random Forest despite a PR-AUC tie was the right operational call.** Random Forest and XGBoost scored 0.811 vs 0.810 - effectively identical. Choosing XGBoost based on 18× faster training and better tooling for production deployment was a judgment call, not a metric call. Worth knowing that real model selection often happens on factors beyond pure score.
 
 **LightGBM produced degenerate outputs that I chose to document rather than fix.** At a 600:1 imbalance ratio, LightGBM consistently output probabilities of exactly 0 or 1 even after several configuration attempts (`is_unbalance=True`, then `scale_pos_weight`, then deeper regularization). After several rounds of debugging, I concluded that LightGBM didn't fit this specific imbalance and excluded it from the final comparison. **Lesson: knowing when to stop debugging a non-essential component is a real skill.**
 
-**Tuning produced a smaller improvement than I expected — and that was useful information.** Optuna with 30 trials moved CV PR-AUC from 0.849 to 0.855 (+0.6%) and test PR-AUC from 0.806 to 0.810 (+0.5%). This narrow gain suggested the achievable ceiling for this dataset with these features is around 0.81 — further improvement would require additional data sources, not better tuning. **Lesson: tuning has diminishing returns; recognize the plateau and stop.**
+**Tuning produced a smaller improvement than I expected and that was useful information.** Optuna with 30 trials moved CV PR-AUC from 0.849 to 0.855 (+0.6%) and test PR-AUC from 0.806 to 0.810 (+0.5%). This narrow gain suggested the achievable ceiling for this dataset with these features is around 0.81 - further improvement would require additional data sources, not better tuning. **Lesson: tuning has diminishing returns; recognize the plateau and stop.**
 
 ---
 
@@ -271,8 +271,8 @@ end-to-end-credit-card-fraud-detection/
 │   ├── demo_data.py                  # Demo data fallback for fresh clones
 │   ├── streamlit_app.py              # Main landing page
 │   └── utils.py                      # Shared helpers + cached data loaders
-├── data/                             # (gitignored) — CSVs from pipeline
-├── models/                           # (gitignored) — trained .pkl files
+├── data/                             # (gitignored) CSVs from pipeline
+├── models/                           # (gitignored) trained .pkl files
 ├── notebooks/
 │   └── eda.ipynb                     # 7-section EDA with matplotlib + seaborn
 ├── src/
@@ -311,4 +311,4 @@ end-to-end-credit-card-fraud-detection/
 
 ## Contact
 
-**Reshma Reddy Mukkala** · [LinkedIn](linkedin.com/in/reshma-reddy-mukkala-8956b5209) · [GitHub](https://github.com/reshmareddymukkala)
+**Reshma Reddy Mukkala** · [LinkedIn](www.linkedin.com/in/reshma-reddy-mukkala-8956b5209) · [GitHub](https://github.com/reshmareddymukkala)
