@@ -215,6 +215,11 @@ prediction_input = pd.DataFrame([sample[feature_cols].to_dict()])
 for feature, value in inputs.items():
     prediction_input[feature] = value
 
+# CRITICAL: reorder columns to match the order the model was trained on.
+# XGBoost is strict about column order and will fail if they don't match.
+if hasattr(model, "feature_names_in_"):
+    prediction_input = prediction_input[list(model.feature_names_in_)]
+
 # Predict
 proba = model.predict_proba(prediction_input)[0, 1]
 pred = int(proba >= 0.5)
