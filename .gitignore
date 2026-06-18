@@ -1,7 +1,7 @@
 # Data and models (too large for git)
 /data/
-/models/*
-!/models/production_model.pkl
+/models/
+#!/models/production_model.pkl
 
 # Environment variables (secrets!)
 .env
